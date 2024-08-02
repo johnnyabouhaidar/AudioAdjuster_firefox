@@ -5,6 +5,9 @@
     if (!video) return;
   
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+    
+
     const analyser = audioContext.createAnalyser();
     analyser.fftSize = 256;
     const bufferLength = analyser.frequencyBinCount;
@@ -13,7 +16,9 @@
     const source = audioContext.createMediaElementSource(video);
     source.connect(analyser);
     analyser.connect(audioContext.destination);
-  
+    
+    //
+
     function getAudioLevel() {
       analyser.getByteTimeDomainData(dataArray);
   
@@ -24,9 +29,18 @@
       const rms = Math.sqrt(sum / bufferLength);
       const audioLevel = rms; // This is the audio level
   
-      // Send audio level to background script
-      browser.runtime.sendMessage({ audioLevel });
-  
+
+
+      window.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const gainNode = window.audioContext.createGain();
+      gainNode.connect(window.audioContext.destination);
+      gainNode.gain.value = 40;
+      window.setAudioVolume = (volume) => {
+        
+      };
+            // Send audio level to background script
+            browser.runtime.sendMessage({ audioLevel });
+
       // Call this function again to continuously get the audio level
       requestAnimationFrame(getAudioLevel);
     }
