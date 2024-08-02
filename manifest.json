@@ -1,0 +1,24 @@
+{
+    "manifest_version": 2,
+    "name": "Tab Audio Level Reader",
+    "version": "1.0",
+    "permissions": [
+      "tabs",
+      "activeTab",
+      "webNavigation",
+      "https://*.youtube.com/*"
+    ],
+    "background": {
+      "scripts": ["background.js"],
+      "persistent": false
+    },
+    "browser_action": {
+      "default_popup": "popup.html"
+    },
+    "content_scripts": [
+      {
+        "matches": ["https://*.youtube.com/*"],
+        "js": ["content.js"]
+      }
+    ]
+  }
